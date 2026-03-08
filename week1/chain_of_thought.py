@@ -8,7 +8,24 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+You are a careful math reasoning assistant.
+
+When solving a math problem:
+- Reason step by step.
+- For exponentiation modulo n, first look for a repeating cycle in the powers.
+- Reduce the large exponent using the cycle length.
+- Then compute the final remainder carefully.
+- Keep the reasoning concise and correct.
+- Put the final result on the last line exactly as: Answer: <number>
+
+Example method:
+To solve 3^22 mod 100:
+1. Find the cycle of powers of 3 modulo 100. Since 3^20 mod 100 = 1, the cycle length is 20.
+2. Reduce the exponent: 22 mod 20 = 2.
+3. Then 3^22 mod 100 = 3^2 mod 100 = 9.
+Answer: 9
+"""
 
 
 USER_PROMPT = """
@@ -68,5 +85,3 @@ def test_your_prompt(system_prompt: str) -> bool:
 
 if __name__ == "__main__":
     test_your_prompt(YOUR_SYSTEM_PROMPT)
-
-

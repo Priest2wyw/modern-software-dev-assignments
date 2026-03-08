@@ -9,7 +9,14 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in! Try to get as close to 100% correctness across all runs as possible.
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+Your are a helpful assistant who real good at compute. 
+
+TASK:
+Compute the question one step by one step, and show the answer in the end by the format "Answer: <answer>".
+
+Let's think step by step,
+"""
 
 USER_PROMPT = """
 Solve this problem, then give the final answer on the last line as "Answer: <number>".
@@ -62,7 +69,7 @@ def test_your_prompt(system_prompt: str) -> bool:
 
     if not answers:
         print("No answers produced.")
-        return False
+        return Fals
 
     counts = Counter(answers)
     majority_answer, majority_count = counts.most_common(1)[0]

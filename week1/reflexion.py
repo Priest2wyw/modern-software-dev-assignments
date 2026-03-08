@@ -15,7 +15,9 @@ Keep the implementation minimal.
 """
 
 # TODO: Fill this in!
-YOUR_REFLEXION_PROMPT = ""
+YOUR_REFLEXION_PROMPT = """
+You are a coding assistant who fix code by error trace_information given.Fix the funtion is_valid_password(password: str) -> bool. No prose or comments. 
+"""
 
 
 # Ground-truth test suite used to evaluate generated code
@@ -96,7 +98,14 @@ def your_build_reflexion_context(prev_code: str, failures: List[str]) -> str:
 
     Return a string that will be sent as the user content alongside the reflexion system prompt.
     """
-    return ""
+    reflexion_context = f"""
+    prev_code :
+    {prev_code}
+
+    failures:
+    {failures}
+    """
+    return reflexion_context 
 
 
 def apply_reflexion(

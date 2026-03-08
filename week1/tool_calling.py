@@ -70,7 +70,22 @@ TOOL_REGISTRY: Dict[str, Callable[..., str]] = {
 # ==========================
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+You can call exactly one tool.
+
+  Available tool:
+  - output_every_func_return_type
+    Args:
+    - file_path: string
+
+  When asked to call the tool, output only a JSON object with this schema:
+  {
+    "tool": "<tool name>",
+    "args": {
+      "file_path": "<path>"
+    }
+  }
+"""
 
 
 def resolve_path(p: str) -> str:
@@ -141,13 +156,14 @@ def compute_expected_output() -> str:
 def test_your_prompt(system_prompt: str) -> bool:
     """Run once: require the model to produce a valid tool call; compare tool output to expected."""
     expected = compute_expected_output()
+    print(f">>>expected is {expected} \n <<<")
     for _ in range(NUM_RUNS_TIMES):
         try:
             call = run_model_for_tool_call(system_prompt)
         except Exception as exc:
             print(f"Failed to parse tool call: {exc}")
             continue
-        print(call)
+        print(f"result of call is >>>{call}\/<<<")
         try:
             actual = execute_tool_call(call)
         except Exception as exc:
