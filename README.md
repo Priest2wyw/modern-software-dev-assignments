@@ -25,3 +25,32 @@ These steps work with Python 3.12.
    ```bash
    poetry install --no-interaction
    ```
+
+## Makefile Python Environment
+
+The top-level `Makefile` uses the current shell's Python by default:
+
+```make
+PY ?= python
+```
+
+Recommended usage:
+
+1. Activate the environment you want to use first.
+   ```bash
+   conda activate cs146s
+   ```
+2. Run `make` targets normally.
+   ```bash
+   make w1-k-shot
+   make w2-test
+   ```
+
+If you need a specific interpreter for one command, override `PY` explicitly:
+
+```bash
+make PY=python3 w1-k-shot
+make PY=/path/to/python w2-test
+```
+
+This keeps the default configuration simple and avoids hardcoding machine-specific Python paths in the repository.

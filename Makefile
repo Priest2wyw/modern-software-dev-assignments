@@ -40,8 +40,10 @@ help:
 	@echo "  wX-run/test/format/lint/seed (X=4,5,6,7)"
 	@echo ""
 	@echo "Env overrides:"
+	@echo "  PY=$(PY)"
 	@echo "  OLLAMA_HOST=$(OLLAMA_HOST)"
 	@echo "  NO_PROXY=$(NO_PROXY)"
+	@echo "  Example: make PY=python3 w1-k-shot"
 	@echo "  Example: OLLAMA_HOST=http://127.0.0.1:11434 make w1-k-shot"
 
 w1-k-shot:
