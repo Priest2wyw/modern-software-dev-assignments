@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-PY ?= /data/youwei/conda_env/cs146s/bin/python
+PY ?= python
 HOST ?= 127.0.0.1
 PORT ?= 8000
 OLLAMA_HOST ?= http://127.0.0.1:8112
