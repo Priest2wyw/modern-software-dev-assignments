@@ -24,6 +24,7 @@
     <div class="row">
       <label class="row"><input id="save_note" type="checkbox" checked /> Save as note</label>
       <button id="extract">Extract</button>
+      <button id="extract-llm">Extract LLM</button>
     </div>
 
     <div class="items" id="items"></div>
@@ -31,18 +32,28 @@
     <script>
       const $ = (sel) => document.querySelector(sel);
       const itemsEl = $('#items');
-      const btn = $('#extract');
-      btn.addEventListener('click', async () => {
+      const extractBtn = $('#extract');
+      const extractLlmBtn = $('#extract-llm');
+
+      async function runExtraction(endpoint) {
         const text = $('#text').value;
         const save = $('#save_note').checked;
         itemsEl.textContent = 'Extracting...';
         try {
-          const res = await fetch('/action-items/extract', {
+          const res = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text, save_note: save }),
           });
-          if (!res.ok) throw new Error('Request failed');
+          if (!res.ok) {
+            let message = 'Request failed';
+            try {
+              const errorData = await res.json();
+              message = errorData.detail || message;
+            } catch (_) {
+            }
+            throw new Error(message);
+          }
           const data = await res.json();
           if (!data.items || data.items.length === 0) {
             itemsEl.innerHTML = '<p class="muted">No action items found.</p>';
@@ -63,12 +74,13 @@
           });
         } catch (err) {
           console.error(err);
-          itemsEl.textContent = 'Error extracting items';
+          itemsEl.innerHTML = `<p class="muted">Error extracting items: ${err.message}</p>`;
         }
-      });
+      }
+
+      extractBtn.addEventListener('click', () => runExtraction('/action-items/extract'));
+      extractLlmBtn.addEventListener('click', () => runExtraction('/action-items/extract-llm'));
 
     </script>
   </body>
   </html>
-
-

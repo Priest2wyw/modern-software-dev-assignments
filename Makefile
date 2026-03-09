@@ -1,12 +1,14 @@
 SHELL := /bin/bash
 
 PY ?= python
-HOST ?= 127.0.0.1
-PORT ?= 8000
+HOST ?= 0.0.0.0
+PORT ?= 8103
 OLLAMA_HOST ?= http://127.0.0.1:8112
+OLLAMA_MODEL ?= llama3.1:8b
 NO_PROXY ?= 127.0.0.1,localhost
 
 export OLLAMA_HOST
+export OLLAMA_MODEL
 export NO_PROXY
 export no_proxy := $(NO_PROXY)
 
@@ -42,6 +44,7 @@ help:
 	@echo "Env overrides:"
 	@echo "  PY=$(PY)"
 	@echo "  OLLAMA_HOST=$(OLLAMA_HOST)"
+	@echo "  OLLAMA_MODEL=$(OLLAMA_MODEL)"
 	@echo "  NO_PROXY=$(NO_PROXY)"
 	@echo "  Example: make PY=python3 w1-k-shot"
 	@echo "  Example: OLLAMA_HOST=http://127.0.0.1:11434 make w1-k-shot"
@@ -67,7 +70,7 @@ w1-reflexion:
 	cd week1 && $(PY) reflexion.py
 
 w2-run:
-	$(PY) -m uvicorn week2.app.main:app --reload --host $(HOST) --port $(PORT)
+	OLLAMA_HOST=$(OLLAMA_HOST) OLLAMA_MODEL=$(OLLAMA_MODEL) poetry run uvicorn week2.app.main:app --reload --host $(HOST) --port $(PORT)
 
 w2-test:
 	$(PY) -m pytest -q week2/tests
